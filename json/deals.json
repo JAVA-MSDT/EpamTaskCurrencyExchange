@@ -1,0 +1,25 @@
+[ {
+  "dealId" : 1,
+  "currencyType" : "EUR",
+  "dealAmount" : 286,
+  "salePrice" : 2.65,
+  "buyPrice" : 2.11
+}, {
+  "dealId" : 2,
+  "currencyType" : "USD",
+  "dealAmount" : 350,
+  "salePrice" : 1.93,
+  "buyPrice" : 1.34
+}, {
+  "dealId" : 3,
+  "currencyType" : "EUR",
+  "dealAmount" : 270,
+  "salePrice" : 2.84,
+  "buyPrice" : 2.44
+}, {
+  "dealId" : 4,
+  "currencyType" : "USD",
+  "dealAmount" : 230,
+  "salePrice" : 1.75,
+  "buyPrice" : 1.22
+} ]
