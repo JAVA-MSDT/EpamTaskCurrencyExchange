@@ -15,16 +15,25 @@ public class Deal implements Callable<Deal> {
     private int dealId;
     private CurrencyType currencyType;
     private double dealAmount;
+    private double salePrice;
+    private double buyPrice;
 
-    private static Deal instance;
 
     public Deal() {
     }
 
+    public Deal(int dealId, CurrencyType currencyType, double dealAmount, double salePrice, double buyPrice) {
+        setDealId(dealId);
+        setCurrencyType(currencyType);
+        setDealAmount(dealAmount);
+        setSalePrice(salePrice);
+        setBuyPrice(buyPrice);
+    }
+
     public Deal(int dealId, CurrencyType currencyType, double dealAmount) {
-        this.dealId = dealId;
-        this.currencyType = currencyType;
-        this.dealAmount = dealAmount;
+       setDealId(dealId);
+        setCurrencyType(currencyType);
+        setDealAmount(dealAmount);
     }
 
     public int getDealId() {
@@ -54,6 +63,23 @@ public class Deal implements Callable<Deal> {
         this.dealAmount = dealAmount;
     }
 
+    public double getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(double salePrice) {
+        ArgumentValidator.checkForNegativity(salePrice);
+        this.salePrice = salePrice;
+    }
+
+    public double getBuyPrice() {
+        return buyPrice;
+    }
+
+    public void setBuyPrice(double buyPrice) {
+        ArgumentValidator.checkForNegativity(buyPrice);
+        this.buyPrice = buyPrice;
+    }
 
     @Override
     public String toString() {
@@ -61,11 +87,14 @@ public class Deal implements Callable<Deal> {
                 "dealId=" + dealId +
                 ", currencyType=" + currencyType +
                 ", dealAmount=" + dealAmount +
+                ", salePrice=" + salePrice +
+                ", buyPrice=" + buyPrice +
                 '}';
     }
 
     @Override
     public Deal call() throws Exception {
+
         return this;
     }
 }

@@ -1,6 +1,6 @@
 package com.epam.java.currecyexchanger.logic.dealwinner;
 
-import com.epam.java.currecyexchanger.logic.CurrencyConverter;
+import com.epam.java.currecyexchanger.util.CurrencyConverter;
 import com.epam.java.currecyexchanger.logic.dealwinner.api.DealWinner;
 import com.epam.java.currecyexchanger.model.entity.CurrencyExchanger;
 import com.epam.java.currecyexchanger.model.entity.Deal;
@@ -8,6 +8,7 @@ import com.epam.java.currecyexchanger.model.entity.Participant;
 import com.epam.java.currecyexchanger.model.enumer.CurrencyType;
 import com.epam.java.currecyexchanger.util.ArgumentValidator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -27,19 +28,18 @@ public class MultiDealDone implements DealWinner {
     private List<Future<Participant>> futureList;
     private List<Future<Deal>> dealList;
     private CurrencyType fromCurrency;
-    private double buyPrice;
-    private CurrencyType toCurrency;
+    private List<Participant> winnerList = new ArrayList<>();
+    private List<Deal> closedDeal = new ArrayList<>();
+    private List<Deal> unClosedDeal = new ArrayList<>();
 
     public MultiDealDone (CurrencyExchanger exchanger, List<Future<Participant>> futureList, List<Future<Deal>> dealList,
-                           CurrencyType fromCurrency, double buyPrice, CurrencyType toCurrency){
+                           CurrencyType fromCurrency){
 
         converter = new CurrencyConverter();
         setExchanger(exchanger);
         setFutureList(futureList);
         setDealList(dealList);
         setFromCurrency(fromCurrency);
-        setBuyPrice(buyPrice);
-        setToCurrency(toCurrency);
 
 
     }
@@ -64,20 +64,22 @@ public class MultiDealDone implements DealWinner {
         this.fromCurrency = fromCurrency;
     }
 
-    private void setBuyPrice(double buyPrice) {
-        ArgumentValidator.checkForNegativity(buyPrice);
-        this.buyPrice = buyPrice;
+
+    public List<Participant> getWinnerList() {
+        return winnerList;
     }
 
-    private void setToCurrency(CurrencyType toCurrency) {
-        ArgumentValidator.checkForNull(toCurrency);
-        this.toCurrency = toCurrency;
+    public List<Deal> getClosedDeal() {
+        return closedDeal;
     }
 
+    public List<Deal> getUnClosedDeal() {
+        return unClosedDeal;
+    }
 
     @Override
     public void dealWinner() {
-        multiDealDone(exchanger, futureList, dealList, fromCurrency, buyPrice, toCurrency);
+        multiDealDone(exchanger, futureList, dealList, fromCurrency);
     }
 
     /**
@@ -85,11 +87,9 @@ public class MultiDealDone implements DealWinner {
      * @param futureList   that have all the participants threads to check if one of them have the requirement to do the
      *                     deal or not
      * @param fromCurrency currency that the client have and want to use to complete the deal
-     * @param buyPrice     for the currency that the client want to buy
-     * @param toCurrency   the currency that the client want to buy
      */
     private void multiDealDone(CurrencyExchanger exchanger, List<Future<Participant>> futureList,
-                              List<Future<Deal>> dealList, CurrencyType fromCurrency, double buyPrice, CurrencyType toCurrency) {
+                              List<Future<Deal>> dealList, CurrencyType fromCurrency) {
 
         int dealChecker = 0;
         Deal deal = null;
@@ -103,18 +103,24 @@ public class MultiDealDone implements DealWinner {
                 for (Future<Participant> future : futureList) {
 
                     double currencyBalance = future.get().getAccountByCurrencyType(fromCurrency).getBalance();
-                    double currencyAvailability = converter.buyingCurrencyQuantity(currencyBalance, buyPrice);
+                    double currencyAvailability = converter.buyingCurrencyQuantity(currencyBalance, deal.getBuyPrice());
 
                     if (dealAmount < currencyAvailability) {
                         System.out.println("Amount of money in your account before the deal: " + currencyBalance + " " + fromCurrency + ".");
                         future.get().getAccountByCurrencyType(fromCurrency).withdraw(currencyAvailability);
-                        future.get().getAccountByCurrencyType(toCurrency).deposit(dealAmount);
+                        future.get().getAccountByCurrencyType(deal.getCurrencyType()).deposit(dealAmount);
+                        winnerList.add(future.get());
+                        deal.setDealAmount(0);
+                        closedDeal.add(deal);
                         System.out.println("Deal is closed, your balance after the deal is: " + future.get());
                         exchanger.setDeal(null);
                         dealChecker++;
                         break;
                     }
 
+                }
+                if(deal.getDealAmount() != 0){
+                    unClosedDeal.add(deal);
                 }
                 if (exchanger.getDeal() != null) {
                     exchanger.setDeal(null);

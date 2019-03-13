@@ -1,0 +1,17 @@
+2019-03-13 21:55:24 [main] ERROR java.currecyexchanger.fileoperator.read.JsonReader - Reading exception from Deals Json file
+com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "dealId" (class com.epam.java.currecyexchanger.model.entity.Participant), not marked as ignorable (3 known properties: "id", "accounts", "name"])
+ at [Source: json\deals.json; line: 2, column: 15] (through reference chain: java.util.ArrayList[0]->com.epam.java.currecyexchanger.model.entity.Participant["dealId"])
+	at com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException.from(UnrecognizedPropertyException.java:51) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.fasterxml.jackson.databind.DeserializationContext.reportUnknownProperty(DeserializationContext.java:839) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.fasterxml.jackson.databind.deser.std.StdDeserializer.handleUnknownProperty(StdDeserializer.java:1045) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperty(BeanDeserializerBase.java:1352) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownVanilla(BeanDeserializerBase.java:1330) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:264) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:125) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.fasterxml.jackson.databind.deser.std.CollectionDeserializer.deserialize(CollectionDeserializer.java:245) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.fasterxml.jackson.databind.deser.std.CollectionDeserializer.deserialize(CollectionDeserializer.java:217) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.fasterxml.jackson.databind.deser.std.CollectionDeserializer.deserialize(CollectionDeserializer.java:25) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:3736) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:2639) ~[jackson-databind-2.6.3.jar:2.6.3]
+	at com.epam.java.currecyexchanger.fileoperator.read.JsonReader.fromDealsJsonFile(JsonReader.java:49) [classes/:?]
+	at com.epam.java.currecyexchanger.view.Main.main(Main.java:37) [classes/:?]

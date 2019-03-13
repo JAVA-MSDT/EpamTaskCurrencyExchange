@@ -15,8 +15,8 @@ public class Account {
     private CurrencyType currencyType;
     private double balance;
 
-    public CurrencyType getCurrencyType() {
-        return currencyType;
+    public Account(){
+
     }
 
     public Account(CurrencyType currencyType, double balance) {
@@ -24,7 +24,9 @@ public class Account {
         setBalance(balance);
     }
 
-
+    public CurrencyType getCurrencyType() {
+        return currencyType;
+    }
     public void setCurrencyType(CurrencyType currencyType) {
         ArgumentValidator.checkForNull(currencyType);
         this.currencyType = currencyType;

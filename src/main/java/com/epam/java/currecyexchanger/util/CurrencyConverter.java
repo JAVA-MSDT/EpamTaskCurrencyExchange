@@ -1,5 +1,8 @@
-package com.epam.java.currecyexchanger.logic;
+package com.epam.java.currecyexchanger.util;
 
+/**
+ * @Author Ahmed Samy (serenitydiver@hotmail.com)
+ */
 public class CurrencyConverter {
 
     /**

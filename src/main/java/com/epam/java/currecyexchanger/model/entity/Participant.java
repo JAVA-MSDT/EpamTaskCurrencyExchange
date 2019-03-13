@@ -30,6 +30,12 @@ public class Participant implements Observer, Callable<Participant> {
         setName(name);
 
     }
+    public Participant(int id, String name, List<Account> accounts) {
+        setId(id);
+        setName(name);
+        this.accounts = accounts;
+
+    }
 
 
     public int getId() {
@@ -107,13 +113,14 @@ public class Participant implements Observer, Callable<Participant> {
 
     @Override
     public void update(CurrencyExchanger exchanger) {
-        System.out.println(this.id + " There is a new deal at the currency, exchange holding the following info: " +
+        System.out.println(this.getName() + " There is a new deal at the currency, exchange holding the following info: " +
                 exchanger.getDeal());
     }
 
 
     @Override
     public Participant call() throws Exception {
+        this.setName(Thread.currentThread().getName());
         return this;
     }
 }

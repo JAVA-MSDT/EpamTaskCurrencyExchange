@@ -1,6 +1,6 @@
 package com.epam.java.currecyexchanger.logic.dealwinner;
 
-import com.epam.java.currecyexchanger.logic.CurrencyConverter;
+import com.epam.java.currecyexchanger.util.CurrencyConverter;
 import com.epam.java.currecyexchanger.logic.dealwinner.api.DealWinner;
 import com.epam.java.currecyexchanger.model.entity.CurrencyExchanger;
 import com.epam.java.currecyexchanger.model.entity.Participant;

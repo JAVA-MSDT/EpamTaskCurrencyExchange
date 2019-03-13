@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * SingleTon Currency Exchanger.
@@ -20,6 +23,8 @@ public class CurrencyExchanger implements Observable {
 
     private static Logger logger = LogManager.getLogger();
     private static CurrencyExchanger instance;
+    private static AtomicBoolean initializaed = new AtomicBoolean(false);
+    private static Lock locker = new ReentrantLock();
     private Deal deal;
     private boolean dealDone;
     private List<Observer> observerList = new ArrayList<>();
@@ -30,9 +35,17 @@ public class CurrencyExchanger implements Observable {
         }
     }
 
-    public synchronized static CurrencyExchanger getInstance(){
-        if(instance == null){
-            instance = new CurrencyExchanger();
+    public static CurrencyExchanger getInstance(){
+        if(!initializaed.get()){
+            try {
+                locker.lock();
+                if (instance == null) {
+                    instance = new CurrencyExchanger();
+                    initializaed.set(true);
+                }
+            }finally {
+                locker.unlock();
+            }
         }
         return instance;
     }

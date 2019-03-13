@@ -1,10 +1,11 @@
 package com.epam.java.currecyexchanger.view;
 
 
-import com.epam.java.currecyexchanger.logic.Action;
+import com.epam.java.currecyexchanger.fileoperator.read.JsonReader;
+import com.epam.java.currecyexchanger.fileoperator.write.JsonWriter;
+import com.epam.java.currecyexchanger.logic.futurelist.FutureDeal;
+import com.epam.java.currecyexchanger.logic.futurelist.FutureParticipants;
 import com.epam.java.currecyexchanger.logic.dealwinner.MultiDealDone;
-import com.epam.java.currecyexchanger.logic.dealwinner.SingleDealDone;
-import com.epam.java.currecyexchanger.logic.dealwinner.api.DealWinner;
 import com.epam.java.currecyexchanger.model.entity.CurrencyExchanger;
 import com.epam.java.currecyexchanger.model.entity.Deal;
 import com.epam.java.currecyexchanger.model.entity.Participant;
@@ -21,23 +22,32 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Action action = new Action();
+        String participantsWinnerJson = "json/winners.json";
+        String participantsJson = "json/participants.json";
+        String completedDeals = "json/completedDeals.json";
+        String unCompletedDeals = "json/unCompletedDeals.json";
+        String fromDeals = "json/deals.json";
 
         ExecutorService executorService = Executors.newCachedThreadPool();
-
-
         CurrencyExchanger exchanger = CurrencyExchanger.getInstance();
-        Deal deal = new Deal(2, CurrencyType.USD, 400);
+        FutureDeal futureDeal = new FutureDeal();
+        FutureParticipants futureParticipants = new FutureParticipants();
+        JsonWriter writer = new JsonWriter();
+        JsonReader reader = new JsonReader();
+
+        List<Participant> participantList = reader.fromParticipantsJsonFile(participantsJson);
+        List<Deal> dealList = reader.fromDealsJsonFile(fromDeals);
+
+        List<Future<Participant>> futureList = futureParticipants.jsonParticipantList(executorService, exchanger, participantList);
+        List<Future<Deal>> dealFutureList = futureDeal.jsonDealList(executorService, dealList);
 
 
-        List<Future<Participant>> futureList = action.participantFutureList(executorService, exchanger, CurrencyType.BYN, 5);
-        List<Future<Deal>> dealFutureList = action.dealFutureList(executorService, CurrencyType.USD, 4);
+        MultiDealDone dealWinner = new MultiDealDone(exchanger, futureList, dealFutureList, CurrencyType.BYN);
 
-        //exchanger.addDeal(deal);
-
-        DealWinner dealWinner = new MultiDealDone(exchanger, futureList, dealFutureList, CurrencyType.BYN, 2.1450, CurrencyType.USD);
-       // dealWinner = new SingleDealDone(exchanger, futureList, CurrencyType.BYN, 2.145, CurrencyType.USD);
         dealWinner.dealWinner();
+        writer.jsonWriter(participantsWinnerJson, dealWinner.getWinnerList());
+        writer.dealWriter(completedDeals, dealWinner.getClosedDeal());
+        writer.dealWriter(unCompletedDeals, dealWinner.getUnClosedDeal());
 
         System.out.println("///////////////////// Participants Info ///////////////////////////////////");
         ParticipantDetails participantDetails = new ParticipantDetails(exchanger.getObserverList());
