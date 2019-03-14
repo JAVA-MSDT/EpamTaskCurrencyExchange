@@ -15,6 +15,11 @@ import java.util.concurrent.Future;
  * @Author Ahmed Samy (serenitydiver@hotmail.com)
  */
 public class FutureParticipants {
+
+
+    public FutureParticipants(){
+
+    }
     /**
      * @param executorService to create a thread pool
      * @param exchanger       instance of exchanger to create a list of observer
@@ -46,17 +51,16 @@ public class FutureParticipants {
     /**
      * @param executorService to create a thread pool
      * @param exchanger       instance of exchanger to create a list of observer
-     * @param participantList to add to the future list and for the observer list
+     * @param participantList to add to the future list and for the observer list, whatever the list source, file, console,,,, etc.
      * @return List<Future < Participant>> to deal with them later for the deal setup.
      */
-    public List<Future<Participant>> jsonParticipantList(ExecutorService executorService, CurrencyExchanger exchanger,
+    public List<Future<Participant>> customParticipantList(ExecutorService executorService, CurrencyExchanger exchanger,
                                                            List<Participant> participantList) {
         List<Future<Participant>> list = new ArrayList<>();
         for (Participant participant : participantList) {
             exchanger.addObserver(participant);
             Future<Participant> participantFuture = executorService.submit(participant);
             list.add(participantFuture);
-
         }
         return list;
     }

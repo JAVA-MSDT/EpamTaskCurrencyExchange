@@ -1,5 +1,6 @@
 package com.epam.java.currecyexchanger.fileoperator.write;
 
+import com.epam.java.currecyexchanger.fileoperator.api.CurrencyExchangeWriter;
 import com.epam.java.currecyexchanger.model.entity.Deal;
 import com.epam.java.currecyexchanger.model.entity.Participant;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +16,7 @@ import java.util.List;
  * To write Participants and deal list to Json file.
  * @Author Ahmed Samy (serenitydiver@hotmail.com)
  */
-public class JsonWriter {
+public class JsonWriter implements CurrencyExchangeWriter {
     private static Logger logger = LogManager.getLogger();
     private ObjectMapper mapper;
 
@@ -24,7 +25,7 @@ public class JsonWriter {
      * @param jsonLocation file to write into it the participants list
      * @param participantList to be written to a json file
      */
-    public void jsonWriter(String jsonLocation, List<Participant> participantList) {
+    public void participantsWriter(String jsonLocation, List<Participant> participantList) {
         mapper = new ObjectMapper();
 
         try {
@@ -41,7 +42,7 @@ public class JsonWriter {
      * @param jsonLocation file to write into it the deal list
      * @param dealList to be written to a json file
      */
-    public void dealWriter(String jsonLocation, List<Deal> dealList) {
+    public void dealsWriter(String jsonLocation, List<Deal> dealList) {
         mapper = new ObjectMapper();
 
         try {

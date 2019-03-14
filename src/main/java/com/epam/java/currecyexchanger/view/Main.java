@@ -5,7 +5,7 @@ import com.epam.java.currecyexchanger.fileoperator.read.JsonReader;
 import com.epam.java.currecyexchanger.fileoperator.write.JsonWriter;
 import com.epam.java.currecyexchanger.logic.futurelist.FutureDeal;
 import com.epam.java.currecyexchanger.logic.futurelist.FutureParticipants;
-import com.epam.java.currecyexchanger.logic.dealwinner.MultiDealDone;
+import com.epam.java.currecyexchanger.logic.dealwinner.DealResult;
 import com.epam.java.currecyexchanger.model.entity.CurrencyExchanger;
 import com.epam.java.currecyexchanger.model.entity.Deal;
 import com.epam.java.currecyexchanger.model.entity.Participant;
@@ -35,19 +35,19 @@ public class Main {
         JsonWriter writer = new JsonWriter();
         JsonReader reader = new JsonReader();
 
-        List<Participant> participantList = reader.fromParticipantsJsonFile(participantsJson);
-        List<Deal> dealList = reader.fromDealsJsonFile(fromDeals);
+        List<Participant> participantList = reader.participantsReader(participantsJson);
+        List<Deal> dealList = reader.dealsReader(fromDeals);
 
-        List<Future<Participant>> futureList = futureParticipants.jsonParticipantList(executorService, exchanger, participantList);
-        List<Future<Deal>> dealFutureList = futureDeal.jsonDealList(executorService, dealList);
+        List<Future<Participant>> futureList = futureParticipants.customParticipantList(executorService, exchanger, participantList);
+        List<Future<Deal>> dealFutureList = futureDeal.customDealList(executorService, dealList);
 
 
-        MultiDealDone dealWinner = new MultiDealDone(exchanger, futureList, dealFutureList, CurrencyType.BYN);
+        DealResult dealWinner = new DealResult(exchanger, futureList, dealFutureList, CurrencyType.BYN);
 
         dealWinner.dealWinner();
-        writer.jsonWriter(participantsWinnerJson, dealWinner.getWinnerList());
-        writer.dealWriter(completedDeals, dealWinner.getClosedDeal());
-        writer.dealWriter(unCompletedDeals, dealWinner.getUnClosedDeal());
+        writer.participantsWriter(participantsWinnerJson, dealWinner.getWinnerList());
+        writer.dealsWriter(completedDeals, dealWinner.getClosedDeal());
+        writer.dealsWriter(unCompletedDeals, dealWinner.getUnClosedDeal());
 
         System.out.println("///////////////////// Participants Info ///////////////////////////////////");
         ParticipantDetails participantDetails = new ParticipantDetails(exchanger.getObserverList());

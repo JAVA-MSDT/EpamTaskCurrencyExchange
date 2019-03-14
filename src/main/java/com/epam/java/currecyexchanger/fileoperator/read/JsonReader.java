@@ -1,5 +1,6 @@
 package com.epam.java.currecyexchanger.fileoperator.read;
 
+import com.epam.java.currecyexchanger.fileoperator.api.CurrencyExchangeReader;
 import com.epam.java.currecyexchanger.model.entity.Deal;
 import com.epam.java.currecyexchanger.model.entity.Participant;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,7 +16,7 @@ import java.util.List;
  * To read the participants and the deals from json files
  * @Author Ahmed Samy (serenitydiver@hotmail.com)
  */
-public class JsonReader {
+public class JsonReader implements CurrencyExchangeReader {
     private static Logger logger = LogManager.getLogger();
     private ObjectMapper mapper;
 
@@ -24,7 +25,7 @@ public class JsonReader {
      * @param jsonLocation for the file that holds the participants details to write them in a list
      * @return list of participants
      */
-    public List<Participant> fromParticipantsJsonFile(String jsonLocation) {
+    public List<Participant> participantsReader(String jsonLocation) {
 
         mapper = new ObjectMapper();
         List<Participant> participantList = null;
@@ -42,7 +43,7 @@ public class JsonReader {
      * @param jsonLocation for the file that holds the participants details to write them in a list
      * @return list of participants
      */
-    public List<Deal> fromDealsJsonFile(String jsonLocation) {
+    public List<Deal> dealsReader(String jsonLocation) {
         mapper = new ObjectMapper();
         List<Deal> dealList = null;
         try {

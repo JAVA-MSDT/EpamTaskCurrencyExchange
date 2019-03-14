@@ -16,6 +16,10 @@ import java.util.concurrent.Future;
 public class FutureDeal {
 
 
+    public FutureDeal(){
+
+    }
+
     /**
      * @param executorService to create a thread pool
      * @param currencyType    to setup a currency type for the money account
@@ -39,10 +43,10 @@ public class FutureDeal {
 
     /**
      * @param executorService to create a thread pool
-     * @param dealList to work with them as deal threads
+     * @param dealList to work with them as deal threads, whatever from where the deal coming, file, console,,,, etc.
      * @return List<Future < Deal>> to deal with them later for the deal setup.
      */
-    public List<Future<Deal>> jsonDealList(ExecutorService executorService,List<Deal> dealList) {
+    public List<Future<Deal>> customDealList(ExecutorService executorService, List<Deal> dealList) {
         List<Future<Deal>> list = new ArrayList<>();
         for (Deal deal : dealList) {
             Future<Deal> dealFuture = executorService.submit(deal);
@@ -50,5 +54,7 @@ public class FutureDeal {
         }
         return list;
     }
+
+
 
 }

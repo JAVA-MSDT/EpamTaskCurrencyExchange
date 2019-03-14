@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * doing the same process until the deal list is end.
  * @Author Ahmed Samy (serenitydiver@hotmail.com)
  */
-public class MultiDealDone implements DealWinner {
+public class DealResult implements DealWinner {
 
     private CurrencyConverter converter;
     private CurrencyExchanger exchanger;
@@ -32,8 +32,8 @@ public class MultiDealDone implements DealWinner {
     private List<Deal> closedDeal = new ArrayList<>();
     private List<Deal> unClosedDeal = new ArrayList<>();
 
-    public MultiDealDone (CurrencyExchanger exchanger, List<Future<Participant>> futureList, List<Future<Deal>> dealList,
-                           CurrencyType fromCurrency){
+    public DealResult(CurrencyExchanger exchanger, List<Future<Participant>> futureList, List<Future<Deal>> dealList,
+                      CurrencyType fromCurrency){
 
         converter = new CurrencyConverter();
         setExchanger(exchanger);
@@ -103,7 +103,7 @@ public class MultiDealDone implements DealWinner {
                 for (Future<Participant> future : futureList) {
 
                     double currencyBalance = future.get().getAccountByCurrencyType(fromCurrency).getBalance();
-                    double currencyAvailability = converter.buyingCurrencyQuantity(currencyBalance, deal.getBuyPrice());
+                    double currencyAvailability = converter.buyingCurrencyQuantity(currencyBalance, deal.getSalePrice());
 
                     if (dealAmount < currencyAvailability) {
                         System.out.println("Amount of money in your account before the deal: " + currencyBalance + " " + fromCurrency + ".");
