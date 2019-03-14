@@ -3,6 +3,7 @@ package com.epam.java.currecyexchanger.fileoperator.write;
 import com.epam.java.currecyexchanger.fileoperator.api.CurrencyExchangeWriter;
 import com.epam.java.currecyexchanger.model.entity.Deal;
 import com.epam.java.currecyexchanger.model.entity.Participant;
+import com.epam.java.currecyexchanger.util.ArgumentValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.logging.log4j.LogManager;
@@ -26,6 +27,9 @@ public class JsonWriter implements CurrencyExchangeWriter {
      * @param participantList to be written to a json file
      */
     public void participantsWriter(String jsonLocation, List<Participant> participantList) {
+        ArgumentValidator.checkForNullOrEmptyString(jsonLocation);
+        ArgumentValidator.checkForNull(participantList);
+
         mapper = new ObjectMapper();
 
         try {
@@ -43,6 +47,9 @@ public class JsonWriter implements CurrencyExchangeWriter {
      * @param dealList to be written to a json file
      */
     public void dealsWriter(String jsonLocation, List<Deal> dealList) {
+        ArgumentValidator.checkForNullOrEmptyString(jsonLocation);
+        ArgumentValidator.checkForNull(dealList);
+
         mapper = new ObjectMapper();
 
         try {

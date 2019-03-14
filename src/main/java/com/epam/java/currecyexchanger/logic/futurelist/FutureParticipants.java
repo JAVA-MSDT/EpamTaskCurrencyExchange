@@ -4,6 +4,7 @@ import com.epam.java.currecyexchanger.model.entity.Account;
 import com.epam.java.currecyexchanger.model.entity.CurrencyExchanger;
 import com.epam.java.currecyexchanger.model.entity.Participant;
 import com.epam.java.currecyexchanger.model.enumer.CurrencyType;
+import com.epam.java.currecyexchanger.util.ArgumentValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,11 @@ public class FutureParticipants {
      */
     public List<Future<Participant>> randomParticipantList(ExecutorService executorService, CurrencyExchanger exchanger,
                                                            CurrencyType currencyType, int threadQuantity) {
+        ArgumentValidator.checkForNull(executorService);
+        ArgumentValidator.checkForNull(exchanger);
+        ArgumentValidator.checkForNull(currencyType);
+        ArgumentValidator.checkForNegativity(threadQuantity);
+
         List<Future<Participant>> list = new ArrayList<>();
         for (int i = 0; i < threadQuantity; i++) {
             int randomNumber = new Random().nextInt(10);
@@ -56,6 +62,10 @@ public class FutureParticipants {
      */
     public List<Future<Participant>> customParticipantList(ExecutorService executorService, CurrencyExchanger exchanger,
                                                            List<Participant> participantList) {
+        ArgumentValidator.checkForNull(executorService);
+        ArgumentValidator.checkForNull(exchanger);
+        ArgumentValidator.checkForNull(participantList);
+
         List<Future<Participant>> list = new ArrayList<>();
         for (Participant participant : participantList) {
             exchanger.addObserver(participant);

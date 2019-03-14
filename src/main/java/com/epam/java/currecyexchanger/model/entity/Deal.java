@@ -3,6 +3,7 @@ package com.epam.java.currecyexchanger.model.entity;
 import com.epam.java.currecyexchanger.model.enumer.CurrencyType;
 import com.epam.java.currecyexchanger.util.ArgumentValidator;
 
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 /**
@@ -79,6 +80,35 @@ public class Deal implements Callable<Deal> {
     public void setBuyPrice(double buyPrice) {
         ArgumentValidator.checkForNegativity(buyPrice);
         this.buyPrice = buyPrice;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        Deal deal = (Deal) o;
+        return dealId == deal.dealId &&
+                Double.compare(deal.dealAmount, dealAmount) == 0 &&
+                Double.compare(deal.salePrice, salePrice) == 0 &&
+                Double.compare(deal.buyPrice, buyPrice) == 0 &&
+                currencyType == deal.currencyType;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        result = prime * result + dealId;
+        temp = Double.doubleToLongBits(dealAmount);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(salePrice);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(buyPrice);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((currencyType != null) ? currencyType.hashCode() : 0);
+
+        return result;
     }
 
     @Override

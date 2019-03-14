@@ -3,6 +3,7 @@ package com.epam.java.currecyexchanger.logic.futurelist;
 
 import com.epam.java.currecyexchanger.model.entity.Deal;
 import com.epam.java.currecyexchanger.model.enumer.CurrencyType;
+import com.epam.java.currecyexchanger.util.ArgumentValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,10 @@ public class FutureDeal {
      * @return List<Future < Deal>> to deal with them later for the deal setup.
      */
     public List<Future<Deal>> randomDealList(ExecutorService executorService, CurrencyType currencyType, int dealQuantity) {
+        ArgumentValidator.checkForNull(executorService);
+        ArgumentValidator.checkForNull(currencyType);
+        ArgumentValidator.checkForNegativity(dealQuantity);
+
         List<Future<Deal>> list = new ArrayList<>();
         for (int i = 0; i < dealQuantity; i++) {
             int randomNumber = new Random().nextInt(10);
@@ -47,6 +52,9 @@ public class FutureDeal {
      * @return List<Future < Deal>> to deal with them later for the deal setup.
      */
     public List<Future<Deal>> customDealList(ExecutorService executorService, List<Deal> dealList) {
+        ArgumentValidator.checkForNull(executorService);
+        ArgumentValidator.checkForNull(dealList);
+
         List<Future<Deal>> list = new ArrayList<>();
         for (Deal deal : dealList) {
             Future<Deal> dealFuture = executorService.submit(deal);

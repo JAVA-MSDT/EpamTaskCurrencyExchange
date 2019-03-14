@@ -2,6 +2,7 @@ package com.epam.java.currecyexchanger.view.detailsprinter;
 
 import com.epam.java.currecyexchanger.model.observerapi.Observer;
 import com.epam.java.currecyexchanger.model.entity.Participant;
+import com.epam.java.currecyexchanger.util.ArgumentValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,6 +20,11 @@ public class ParticipantDetails implements Runnable {
     private List<Observer> observerList;
 
     public ParticipantDetails(List<Observer> observerList){
+        setObserverList(observerList);
+    }
+
+    public void setObserverList(List<Observer> observerList) {
+        ArgumentValidator.checkForNull(observerList);
         this.observerList = observerList;
     }
 

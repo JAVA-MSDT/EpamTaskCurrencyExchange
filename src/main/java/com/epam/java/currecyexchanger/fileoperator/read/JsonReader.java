@@ -3,6 +3,7 @@ package com.epam.java.currecyexchanger.fileoperator.read;
 import com.epam.java.currecyexchanger.fileoperator.api.CurrencyExchangeReader;
 import com.epam.java.currecyexchanger.model.entity.Deal;
 import com.epam.java.currecyexchanger.model.entity.Participant;
+import com.epam.java.currecyexchanger.util.ArgumentValidator;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
@@ -26,6 +27,7 @@ public class JsonReader implements CurrencyExchangeReader {
      * @return list of participants
      */
     public List<Participant> participantsReader(String jsonLocation) {
+        ArgumentValidator.checkForNullOrEmptyString(jsonLocation);
 
         mapper = new ObjectMapper();
         List<Participant> participantList = null;
@@ -44,6 +46,7 @@ public class JsonReader implements CurrencyExchangeReader {
      * @return list of participants
      */
     public List<Deal> dealsReader(String jsonLocation) {
+        ArgumentValidator.checkForNullOrEmptyString(jsonLocation);
         mapper = new ObjectMapper();
         List<Deal> dealList = null;
         try {
