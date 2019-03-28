@@ -1,6 +1,7 @@
 package com.epam.java.currecyexchanger.model.entity;
 
 import com.epam.java.currecyexchanger.model.enumer.CurrencyType;
+import com.epam.java.currecyexchanger.model.enumer.DealType;
 import com.epam.java.currecyexchanger.util.ArgumentValidator;
 
 import java.util.Objects;
@@ -11,18 +12,26 @@ import java.util.concurrent.Callable;
  * implementing callable so we can return the created deal then use it for the deal offer to the participants.
  * @Author Ahmed Samy (serenitydiver@hotmail.com)
  */
-public class Deal implements Callable<Deal> {
+public class Deal {
 
     private int dealId;
     private CurrencyType currencyType;
     private double dealAmount;
     private double salePrice;
     private double buyPrice;
+    private DealType dealType;
 
 
     public Deal() {
     }
-
+    public Deal(int dealId, CurrencyType currencyType, double dealAmount, double salePrice, double buyPrice, DealType dealType) {
+        setDealId(dealId);
+        setCurrencyType(currencyType);
+        setDealAmount(dealAmount);
+        setSalePrice(salePrice);
+        setBuyPrice(buyPrice);
+        setDealType(dealType);
+    }
     public Deal(int dealId, CurrencyType currencyType, double dealAmount, double salePrice, double buyPrice) {
         setDealId(dealId);
         setCurrencyType(currencyType);
@@ -82,6 +91,15 @@ public class Deal implements Callable<Deal> {
         this.buyPrice = buyPrice;
     }
 
+    public DealType getDealType() {
+        return dealType;
+    }
+
+    public void setDealType(DealType dealType) {
+        ArgumentValidator.checkForNull(dealType);
+        this.dealType = dealType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -91,7 +109,8 @@ public class Deal implements Callable<Deal> {
                 Double.compare(deal.dealAmount, dealAmount) == 0 &&
                 Double.compare(deal.salePrice, salePrice) == 0 &&
                 Double.compare(deal.buyPrice, buyPrice) == 0 &&
-                currencyType == deal.currencyType;
+                currencyType == deal.currencyType &&
+                dealType == deal.dealType;
     }
 
     @Override
@@ -107,6 +126,7 @@ public class Deal implements Callable<Deal> {
         temp = Double.doubleToLongBits(buyPrice);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         result = prime * result + ((currencyType != null) ? currencyType.hashCode() : 0);
+        result = prime * result + ((dealType != null) ? dealType.hashCode() : 0);
 
         return result;
     }
@@ -119,12 +139,7 @@ public class Deal implements Callable<Deal> {
                 ", dealAmount=" + dealAmount +
                 ", salePrice=" + salePrice +
                 ", buyPrice=" + buyPrice +
+                ", dealType=" + dealType +
                 '}';
-    }
-
-    @Override
-    public Deal call() throws Exception {
-
-        return this;
     }
 }

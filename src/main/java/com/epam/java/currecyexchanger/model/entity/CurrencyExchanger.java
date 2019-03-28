@@ -1,5 +1,6 @@
 package com.epam.java.currecyexchanger.model.entity;
 
+import com.epam.java.currecyexchanger.model.enumer.CurrencyType;
 import com.epam.java.currecyexchanger.model.observerapi.Observer;
 import com.epam.java.currecyexchanger.model.observerapi.Observable;
 import com.epam.java.currecyexchanger.util.ArgumentValidator;
@@ -11,8 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.*;
 
 /**
  * SingleTon Currency Exchanger.
@@ -23,10 +23,11 @@ public class CurrencyExchanger implements Observable {
 
     private static Logger logger = LogManager.getLogger();
     private static CurrencyExchanger instance;
-    private static AtomicBoolean initializaed = new AtomicBoolean(false);
+    private static AtomicBoolean initialized = new AtomicBoolean(false);
     private static Lock locker = new ReentrantLock();
     private Deal deal;
     private boolean dealDone;
+    private List<Account> accounts = new ArrayList<>();
     private List<Observer> observerList = new ArrayList<>();
 
     private CurrencyExchanger() {
@@ -36,12 +37,12 @@ public class CurrencyExchanger implements Observable {
     }
 
     public static CurrencyExchanger getInstance(){
-        if(!initializaed.get()){
+        if(!initialized.get()){
             try {
                 locker.lock();
                 if (instance == null) {
                     instance = new CurrencyExchanger();
-                    initializaed.set(true);
+                    initialized.set(true);
                 }
             }finally {
                 locker.unlock();
@@ -51,19 +52,15 @@ public class CurrencyExchanger implements Observable {
     }
 
     public Deal getDeal() {
-        return deal;
+
+            return deal;
+
     }
 
-    public void setDeal(Deal deal) {
-        this.deal = deal;
-    }
+    public  void setDeal(Deal deal) {
 
-    public boolean isDealDone() {
-        return dealDone;
-    }
+            this.deal = deal;
 
-    public void setDealDone(boolean dealDone) {
-        this.dealDone = dealDone;
     }
 
     public List<Observer> getObserverList() {
@@ -71,12 +68,43 @@ public class CurrencyExchanger implements Observable {
     }
 
 
-    public void addDeal(Deal deal) {
+    public  void addDeal(Deal deal) {
         ArgumentValidator.checkForNull(deal);
         if (this.deal == null) {
             setDeal(deal);
             notifyObserver();
         }
+
+    }
+
+    public Account getAccountByCurrencyType(CurrencyType currencyType) {
+        ArgumentValidator.checkForNull(currencyType);
+        try{
+            locker.lock();
+            Account accountIn = null;
+            for (Account a : accounts) {
+                if (a.getCurrencyType() == currencyType) {
+                    accountIn = a;
+                }
+            }
+            return accountIn;
+        } finally {
+            locker.unlock();
+        }
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void addAccount(Account account) {
+        ArgumentValidator.checkForNull(account);
+        accounts.add(account);
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        ArgumentValidator.checkForNull(accounts);
+        this.accounts = accounts;
     }
     @Override
     public boolean equals(Object o) {
@@ -84,7 +112,8 @@ public class CurrencyExchanger implements Observable {
         if (this == o) return true;
         CurrencyExchanger cE = (CurrencyExchanger) o;
         return dealDone == cE.dealDone &&
-                Objects.equals(deal, cE.deal);
+                Objects.equals(deal, cE.deal) &&
+                Objects.equals(accounts, cE.accounts);
     }
 
     @Override
@@ -93,6 +122,7 @@ public class CurrencyExchanger implements Observable {
         int result = 1;
         result = prime * result + ((deal != null) ? deal.hashCode() : 0);
         result = prime * result + (dealDone ? 1231 : 1237);
+        result = prime * result + ((accounts != null) ? accounts.hashCode() : 0);
         return result;
     }
 
@@ -101,6 +131,7 @@ public class CurrencyExchanger implements Observable {
         return "CurrencyExchanger{" +
                 "deal=" + deal +
                 ", dealDone=" + dealDone +
+                ", account=" + accounts +
                 '}';
     }
 
@@ -121,7 +152,7 @@ public class CurrencyExchanger implements Observable {
         System.out.println();
         System.out.println("****************( Participants Notify Starts )******************");
         for (Observer o : observerList) {
-            o.update(this);
+            o.update();
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {

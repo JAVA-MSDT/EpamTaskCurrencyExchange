@@ -1,7 +1,6 @@
-package com.epam.java.currecyexchanger.fileoperator.read;
+package com.epam.java.currecyexchanger.io.read;
 
-import com.epam.java.currecyexchanger.fileoperator.api.CurrencyExchangeReader;
-import com.epam.java.currecyexchanger.model.entity.Deal;
+import com.epam.java.currecyexchanger.io.api.IParticipantReader;
 import com.epam.java.currecyexchanger.model.entity.Participant;
 import com.epam.java.currecyexchanger.util.ArgumentValidator;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -11,15 +10,15 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
-
 /**
- * To read the participants and the deals from json files
+ * To read the participantsfrom json files
  * @Author Ahmed Samy (serenitydiver@hotmail.com)
  */
-public class JsonReader implements CurrencyExchangeReader {
+public class ParticipantReader implements IParticipantReader {
+
     private static Logger logger = LogManager.getLogger();
-    private ObjectMapper mapper;
 
     /**
      *
@@ -29,8 +28,8 @@ public class JsonReader implements CurrencyExchangeReader {
     public List<Participant> participantsReader(String jsonLocation) {
         ArgumentValidator.checkForNullOrEmptyString(jsonLocation);
 
-        mapper = new ObjectMapper();
-        List<Participant> participantList = null;
+        ObjectMapper mapper = new ObjectMapper();
+        List<Participant> participantList = Collections.emptyList();
         try {
             participantList = mapper.readValue(new File(jsonLocation), new TypeReference<List<Participant>>() {
             });
@@ -39,24 +38,4 @@ public class JsonReader implements CurrencyExchangeReader {
         }
         return participantList;
     }
-
-    /**
-     *
-     * @param jsonLocation for the file that holds the participants details to write them in a list
-     * @return list of participants
-     */
-    public List<Deal> dealsReader(String jsonLocation) {
-        ArgumentValidator.checkForNullOrEmptyString(jsonLocation);
-        mapper = new ObjectMapper();
-        List<Deal> dealList = null;
-        try {
-            dealList = mapper.readValue(new File(jsonLocation), new TypeReference<List<Deal>>() {
-            });
-        } catch (IOException e) {
-            logger.error("Reading exception from Deals Json file", e);
-        }
-        return dealList;
-    }
-
-
 }
