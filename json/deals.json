@@ -1,0 +1,36 @@
+[  {
+  "dealId" : 1,
+  "currencyType" : "USD",
+  "dealAmount" : 286.0,
+  "salePrice" : 2.8,
+  "buyPrice" : 1.81,
+  "dealType" : "SALE"
+}, {
+  "dealId" : 2,
+  "currencyType" : "BYN",
+  "dealAmount" : 700.0,
+  "salePrice" : 1.45,
+  "buyPrice" : 1.50,
+  "dealType" : "BUY"
+}, {
+  "dealId" : 3,
+  "currencyType" : "USD",
+  "dealAmount" : 300.0,
+  "salePrice" : 1.11,
+  "buyPrice" : 1.40,
+  "dealType" : "SALE"
+}, {
+  "dealId" : 4,
+  "currencyType" : "BYN",
+  "dealAmount" : 800.0,
+  "salePrice" : 1.05,
+  "buyPrice" : 1.95,
+  "dealType" : "BUY"
+},{
+  "dealId" : 5,
+  "currencyType" : "USD",
+  "dealAmount" : 400.0,
+  "salePrice" : 1.15,
+  "buyPrice" : 1.17,
+  "dealType" : "SALE"
+} ]

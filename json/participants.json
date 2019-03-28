@@ -1,0 +1,79 @@
+[ {
+  "id" : 1,
+  "name" : "One",
+  "accounts" : [ {
+    "currencyType" : "BYN",
+    "balance" : 350.0
+  }, {
+    "currencyType" : "EUR",
+    "balance" : 400.0
+  }, {
+    "currencyType" : "USD",
+    "balance" : 300.0
+  } ]
+}, {
+  "id" : 2,
+  "name" : "Two",
+  "accounts" : [ {
+    "currencyType" : "BYN",
+    "balance" : 600.0
+  }, {
+    "currencyType" : "EUR",
+    "balance" : 200.0
+  }, {
+    "currencyType" : "USD",
+    "balance" : 550.0
+  } ]
+}, {
+  "id" : 3,
+  "name" : "Three",
+  "accounts" : [ {
+    "currencyType" : "BYN",
+    "balance" : 800.0
+  }, {
+    "currencyType" : "EUR",
+    "balance" : 450.0
+  }, {
+    "currencyType" : "USD",
+    "balance" : 300.0
+  } ]
+}, {
+  "id" : 4,
+  "name" : "Four",
+  "accounts" : [ {
+    "currencyType" : "BYN",
+    "balance" : 1000.0
+  }, {
+    "currencyType" : "EUR",
+    "balance" : 350.0
+  }, {
+    "currencyType" : "USD",
+    "balance" : 600.0
+  } ]
+}, {
+  "id" : 5,
+  "name" : "Five",
+  "accounts" : [ {
+    "currencyType" : "BYN",
+    "balance" : 800.0
+  }, {
+    "currencyType" : "EUR",
+    "balance" : 100.0
+  }, {
+    "currencyType" : "USD",
+    "balance" : 300.0
+  } ]
+}, {
+  "id" : 6,
+  "name" : "Six",
+  "accounts" : [ {
+    "currencyType" : "BYN",
+    "balance" : 650.0
+  }, {
+    "currencyType" : "EUR",
+    "balance" : 350.0
+  }, {
+    "currencyType" : "USD",
+    "balance" : 100.0
+  } ]
+}]
